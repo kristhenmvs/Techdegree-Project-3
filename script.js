@@ -127,24 +127,23 @@ $paymentOption.change ( () => {
 
 function nameValidator(name) {
     let nameValue = $('#name').val();
+    const $errorMessage = $('<label></label>');
+    $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
+    $errorMessage.addClass("errorName");
+    $('#name').prev().append($errorMessage);
+
     if (nameValue.length === 0){
         $('#name').css('border-color', 'red');
-        const $errorMessage = $('<label></label>');
-        $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
-        $('#name').prev().append($errorMessage);
         $errorMessage.text('Please enter your name.');
         return false;
     } else if (/^[a-zA-Z]+$/.test(nameValue) === false){
         $('#name').css('border-color', 'red');
-        const $errorMessage = $('<label></label>');
-        $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
-        $('#name').prev().append($errorMessage);
         $errorMessage.text('Please enter your name using only letters.');
-        
         return false;
     } else {
-        if ($errorMessage){
-            $('#name').prev().remove($errorMessage);
+        if ($('.errorName')){
+            $('#name').css('border-color', '#6F9DDC');
+            $('.errorName').remove();
         }
         return true;
     }
@@ -152,17 +151,20 @@ function nameValidator(name) {
 
 function emailValidator(email) {
     let testEmail = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
-    if ( testEmail === false){
-        $('#mail').css('border-color', 'red');
-        const $errorMessage = $('<label></label>');
+    const $errorMessage = $('<label></label>');
         $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
         $('#mail').prev().append($errorMessage);
+        $errorMessage.addClass('errorEmail');
+
+    if ( testEmail === false){
+        $('#mail').css('border-color', 'red');
         $errorMessage.text('Please enter a valid email address.');
-        $errorMessage.addClass('error');
         return false;
     } else {
-        if ($('.error')){
-            $('#mail').prev().remove($('.error'));
+        if ($('.errorEmail')){
+            $('#mail').css('border-color', '#6F9DDC');
+            $('.errorEmail').remove();
+    
         }
         return true;
     }
