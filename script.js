@@ -15,6 +15,10 @@ $jobTitle.change ( () => {
     }
 })
 
+/***************
+Shirts section
+***************/
+
 const $shirtDesign = $('#design');
 const $shirtColor = $('#color');
 
@@ -58,6 +62,11 @@ $shirtDesign.change ( () => {
     }
 })
 
+
+/*****************
+Activities section
+*****************/
+
 // To display the total cost of the activities
 let $costLabel = $('<label></label>');
 $('.activities').append($costLabel);
@@ -99,6 +108,9 @@ $('.activities').change( (e) => {
     })
 })
 
+/***************
+Payment section
+***************/
 
 $("#payment option[value='select method']").hide();
 $('#paypal').hide();
@@ -124,6 +136,9 @@ $paymentOption.change ( () => {
     }
 })
 
+/*******************
+Validation section
+*******************/
 
 function nameValidator(name) {
     let nameValue = $('#name').val();
@@ -152,9 +167,9 @@ function nameValidator(name) {
 function emailValidator(email) {
     let testEmail = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
     const $errorMessage = $('<label></label>');
-        $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
-        $('#mail').prev().append($errorMessage);
-        $errorMessage.addClass('errorEmail');
+    $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
+    $('#mail').prev().append($errorMessage);
+    $errorMessage.addClass('errorEmail');
 
     if ( testEmail === false){
         $('#mail').css('border-color', 'red');
@@ -173,26 +188,35 @@ function emailValidator(email) {
 
 
 function activitiesValidator() {
-if ($totalCosts === 0){
     const $errorMessage = $('<label></label>');
     $('.activities').prev().append($errorMessage);
-    $errorMessage.text('Please select at least one activity.');
-    return false;
-} else {
-    
-    return true;
-}
+    $errorMessage.css({'color': 'red', 'margin': '0px', 'fontStyle': 'italic'});
+    $errorMessage.addClass("errorActivities");
+   
+    if ($totalCosts === 0){
+        $errorMessage.text('Please select at least one activity.');
+        return false;
+    } else {
+        if ($('.errorActivities')){
+            $('.activities').css('border-color', '#6F9DDC');
+            $('.errorActivities').remove();
+        }
+        return true;
+    }
     
 }
 
 $nameInput.on('blur submit',function(e){
+    e.preventDefault();
     nameValidator(e.target.value);
 });
 
 $('#mail').on('blur submit',function(e){
+    e.preventDefault();
     emailValidator(e.target.value);
 });
 
-$('.activities').on('blur keyup submit',function(e){
-   activitiesValidator(e.target.value);
+$('.activities').on('submit',function(e){
+    e.preventDefault();
+    activitiesValidator(e.target.value);
 });
