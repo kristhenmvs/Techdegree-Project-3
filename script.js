@@ -374,27 +374,27 @@ function ccCVVValidator() {
 
 
 // Real-time validation (for Exceeds).
-$nameInput.on('blur',function(e){
+$nameInput.on('blur keyup',function(e){
     e.preventDefault();
     nameValidator(e.target.value);
 });
 
-$('#mail').on('blur',function(e){
+$('#mail').on('blur keyup',function(e){
     e.preventDefault();
     emailValidator(e.target.value);
 });
 
-$('#cvv').on('blur',function(e){
+$('#cvv').on('blur keyup',function(e){
     e.preventDefault();
     ccCVVValidator(e.target.value);
 });
 
-$('#cc-num').on('blur',function(e){
+$('#cc-num').on('blur keyup',function(e){
     e.preventDefault();
     ccNumberValidator(e.target.value);
 });
 
-$('#zip').on('blur',function(e){
+$('#zip').on('blur keyup',function(e){
     e.preventDefault();
     ccZipValidator(e.target.value);
 });
