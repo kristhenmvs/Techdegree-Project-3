@@ -401,30 +401,38 @@ $('#zip').on('blur keyup',function(e){
     ccZipValidator(e.target.value);
 });
 
-// Check if there's any function returns false.
-function allFunctionsValidator() {
+// Function to call the other functions
+function callAllFunctions(){
+    if ( $('option[value="Credit Card"]').is(':selected') ) {
+        nameValidator($('#name').val());
+        emailValidator($('#mail').val());
+        activitiesValidator(); 
+        ccNumberValidator($('#cc-num').val());
+        ccZipValidator($('#zip').val()); 
+        ccCVVValidator($('#cvv').val());
+       
+    } else {  
+        nameValidator($('#name').val());
+        emailValidator($('#mail').val());
+        activitiesValidator(); 
+    }
+}
+// Submit function.
+// If all the other functions return true, the form submits. Otherwise, it checks again and displays the appropriate error messages.
+$('form').submit(function(e){
     if ( $('option[value="Credit Card"]').is(':selected') ) {
         if (nameValidator($('#name').val()) && emailValidator($('#mail').val()) && activitiesValidator() && ccNumberValidator($('#cc-num').val()) && ccZipValidator($('#zip').val()) && ccCVVValidator($('#cvv').val())) {
             return true;
         } else { 
-            return false;
+            e.preventDefault();
+            callAllFunctions();;
         }
     } else {  
         if (nameValidator($('#name').val()) && emailValidator($('#mail').val()) && activitiesValidator()) { 
             return true;
         } else { 
-            return false;
+            e.preventDefault();
+            callAllFunctions();
         }
-    }
-};
-
-// Submit function.
-// If all the other functions return true, the form submits. Otherwise, it checks again and displays the appropriate error messages.
-$('form').submit(function(e){
-    if (allFunctionsValidator()){ 
-        return true;
-    } else { 
-        e.preventDefault();
-        allFunctionsValidator();
     }
 });
