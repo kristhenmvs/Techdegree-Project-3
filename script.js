@@ -57,7 +57,7 @@ $shirtDesign.change ( () => {
     } else if ($shirtDesign.val() === 'heart js') {
         $shirtColor.show();
         $colorLabel.show();
-        $("#color option[value='tomato']").prop('selected', true)
+        $("#color option[value='tomato']").prop('selected', true);
         $("#color option[value='selectTheme']").hide();
         $("#color option[value='cornflowerblue']").hide(); 
         $("#color option[value='darkslategrey']").hide();
@@ -134,6 +134,7 @@ Payment section
 $("#payment option[value='select method']").hide();
 $('#paypal').hide();
 $('#bitcoin').hide();
+$("#payment option[value='Credit Card']").prop('selected', true);
 const $paymentOption = $('#payment');
 
 // To listen for changes in the payment drop-down menu and show the appropriate information.
@@ -230,6 +231,7 @@ function emailValidator(email) {
     } else {
         $('#mail').css('border-color', '#6F9DDC');
         $errorEmail.hide();
+        $errorEmail2.hide();
         return true;
     }
 }
@@ -312,8 +314,8 @@ $errorZip2.hide();
 
 // Zip code input validation function.
 // Depending on the error found, it displays a different message (for Exceeds).
-function ccZipValidator() {
-    let testZip = ccZip.test();
+function ccZipValidator(num) {
+    let testZip = ccZip.test(num);
     let zipValue = $('#zip').val();
 
     if ( zipValue.length === 0){
@@ -350,8 +352,8 @@ $errorCVV2.hide();
 
 // CVV number input validation function.
 // Depending on the error found, it displays a different message (for Exceeds).
-function ccCVVValidator() {
-    let testCVV = ccCVV.test();
+function ccCVVValidator(num) {
+    let testCVV = ccCVV.test(num);
     let ccCVVValue = $('#cvv').val();
 
     if (ccCVVValue.length === 0) {
@@ -399,21 +401,16 @@ $('#zip').on('blur keyup',function(e){
     ccZipValidator(e.target.value);
 });
 
-// Check if there's any function that returns false
+// Check if there's any function returns false.
 function allFunctionsValidator() {
     if ( $('option[value="Credit Card"]').is(':selected') ) {
-        // Call the cc-related functions
-        ccCVVValidator();
-        ccNumberValidator();
-        ccZipValidator();
-        
-        if (nameValidator() && emailValidator() && activitiesValidator()  && ccNumberValidator() && ccZipValidator() && ccCVVValidator()) {
+        if (nameValidator($('#name').val()) && emailValidator($('#mail').val()) && activitiesValidator() && ccNumberValidator($('#cc-num').val()) && ccZipValidator($('#zip').val()) && ccCVVValidator($('#cvv').val())) {
             return true;
         } else { 
             return false;
         }
     } else {  
-        if (nameValidator() && emailValidator() && activitiesValidator()) { 
+        if (nameValidator($('#name').val()) && emailValidator($('#mail').val()) && activitiesValidator()) { 
             return true;
         } else { 
             return false;
@@ -425,22 +422,9 @@ function allFunctionsValidator() {
 // If all the other functions return true, the form submits. Otherwise, it checks again and displays the appropriate error messages.
 $('form').submit(function(e){
     if (allFunctionsValidator()){ 
-      return true;
+        return true;
     } else { 
-      e.preventDefault();
-      
-        if ( $('option[value="Credit Card"]').is(':selected') ) {
-            ccCVVValidator();
-            ccNumberValidator();
-            ccZipValidator();
-            activitiesValidator();
-            nameValidator();
-            emailValidator();
+        e.preventDefault();
         
-        } else {  
-            activitiesValidator();
-            nameValidator();
-            emailValidator();
-        }
     }
 });
