@@ -425,6 +425,6 @@ $('form').submit(function(e){
         return true;
     } else { 
         e.preventDefault();
-        
+        allFunctionsValidator();
     }
 });
